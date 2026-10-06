@@ -1,66 +1,260 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html> <html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Financeiro</title>
 
-    <title>Meu Financeiro</title>
+<link rel="stylesheet" href="style.css">
 
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-    <header>
+</head> <body>
+<header class="header">
+    <div>
         <h1>Meu Financeiro</h1>
+        <p>Controle suas finanças de forma simples.</p>
+    </div>
 
-        <select id="monthFilter">
-            <option value="10">Outubro</option>
-            <option value="11">Novembro</option>
-            <option value="12">Dezembro</option>
-        </select>
-    </header>
+    <select id="monthFilter">
+        <option value="all">Todos os meses</option>
+        <option value="01">Janeiro</option>
+        <option value="02">Fevereiro</option>
+        <option value="03">Março</option>
+        <option value="04">Abril</option>
+        <option value="05">Maio</option>
+        <option value="06">Junho</option>
+        <option value="07">Julho</option>
+        <option value="08">Agosto</option>
+        <option value="09">Setembro</option>
+        <option value="10">Outubro</option>
+        <option value="11">Novembro</option>
+        <option value="12">Dezembro</option>
+    </select>
+</header>
 
-    <main>
+<main>
 
-        <section class="summary">
+    <section class="summary">
 
-            <div class="card">
+        <div class="card">
+            <div class="card-title">
                 <span>Saldo</span>
-                <strong id="balance">R$ 0,00</strong>
+                <span class="icon">💰</span>
             </div>
 
-            <div class="card">
+            <strong id="balance">R$ 0,00</strong>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
                 <span>Receitas</span>
-                <strong id="income">R$ 0,00</strong>
+                <span class="icon">📈</span>
             </div>
 
-            <div class="card">
+            <strong id="income" class="income">
+                R$ 0,00
+            </strong>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
                 <span>Despesas</span>
-                <strong id="expenses">R$ 0,00</strong>
+                <span class="icon">📉</span>
             </div>
 
-        </section>
+            <strong id="expenses" class="expense">
+                R$ 0,00
+            </strong>
+        </div>
 
-        <section class="transactions">
+    </section>
 
-            <div class="section-header">
+    <section class="transactions">
+
+        <div class="section-header">
+            <div>
                 <h2>Transações</h2>
+                <p>Suas movimentações financeiras</p>
+            </div>
 
-                <button id="addTransaction">
-                    + Adicionar
+            <button id="addTransaction">
+                + Adicionar
+            </button>
+        </div>
+
+        <div id="transactionList" class="transaction-list">
+            <!-- As transações serão inseridas pelo JavaScript -->
+        </div>
+
+        <div id="emptyMessage" class="empty-message">
+            <span>💸</span>
+            <p>Nenhuma transação encontrada.</p>
+        </div>
+
+    </section>
+
+</main>
+
+<!-- Modal -->
+
+<div id="modal" class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <div>
+                <h2>Nova transação</h2>
+                <p>Adicione uma movimentação financeira.</p>
+            </div>
+
+            <button id="closeModal" class="close-button">
+                &times;
+            </button>
+        </div>
+
+        <form id="transactionForm">
+
+            <div class="form-group">
+                <label for="description">
+                    Descrição
+                </label>
+
+                <input
+                    type="text"
+                    id="description"
+                    placeholder="Ex: Supermercado"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="amount">
+                    Valor
+                </label>
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="0,00"
+                    min="0.01"
+                    step="0.01"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Tipo
+                </label>
+
+                <div class="type-options">
+
+                    <label class="type-option">
+                        <input
+                            type="radio"
+                            name="type"
+                            value="expense"
+                            checked
+                        >
+
+                        <span>Despesa</span>
+                    </label>
+
+                    <label class="type-option">
+                        <input
+                            type="radio"
+                            name="type"
+                            value="income"
+                        >
+
+                        <span>Receita</span>
+                    </label>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label for="category">
+                    Categoria
+                </label>
+
+                <select id="category" required>
+
+                    <option value="">
+                        Selecione uma categoria
+                    </option>
+
+                    <option value="Alimentação">
+                        🍔 Alimentação
+                    </option>
+
+                    <option value="Transporte">
+                        🚗 Transporte
+                    </option>
+
+                    <option value="Moradia">
+                        🏠 Moradia
+                    </option>
+
+                    <option value="Lazer">
+                        🎮 Lazer
+                    </option>
+
+                    <option value="Saúde">
+                        🏥 Saúde
+                    </option>
+
+                    <option value="Educação">
+                        📚 Educação
+                    </option>
+
+                    <option value="Salário">
+                        💼 Salário
+                    </option>
+
+                    <option value="Outros">
+                        📦 Outros
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="date">
+                    Data
+                </label>
+
+                <input
+                    type="date"
+                    id="date"
+                    required
+                >
+
+            </div>
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    id="cancelButton"
+                    class="cancel-button"
+                >
+                    Cancelar
                 </button>
+
+                <button
+                    type="submit"
+                    class="save-button"
+                >
+                    Adicionar transação
+                </button>
+
             </div>
 
-            <div id="transactionList">
-                <!-- Transações serão adicionadas pelo JavaScript -->
-            </div>
+        </form>
 
-        </section>
+    </div>
 
-    </main>
+</div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 
-</body>
-</html>
+</body> </html>
