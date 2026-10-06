@@ -1,8 +1,12 @@
-const transactionList =
-    document.querySelector("#transactionList");
+/* =========================================================
+   FINANCE DASHBOARD
+   Controle financeiro pessoal
+========================================================= */
 
-const emptyMessage =
-    document.querySelector("#emptyMessage");
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
 
 const balanceElement =
     document.querySelector("#balance");
@@ -22,23 +26,23 @@ const incomeBar =
 const expenseBar =
     document.querySelector("#expenseBar");
 
+const savingRateElement =
+    document.querySelector("#savingRate");
+
+const transactionList =
+    document.querySelector("#transactionList");
+
+const emptyMessage =
+    document.querySelector("#emptyMessage");
+
 const transactionCount =
     document.querySelector("#transactionCount");
 
-const expenseRatio =
-    document.querySelector("#expenseRatio");
+const monthFilter =
+    document.querySelector("#monthFilter");
 
-const donutChart =
-    document.querySelector("#donutChart");
-
-const donutValue =
-    document.querySelector("#donutValue");
-
-const legendIncome =
-    document.querySelector("#legendIncome");
-
-const legendExpense =
-    document.querySelector("#legendExpense");
+const searchTransaction =
+    document.querySelector("#searchTransaction");
 
 const modal =
     document.querySelector("#modal");
@@ -55,9 +59,6 @@ const cancelButton =
 const transactionForm =
     document.querySelector("#transactionForm");
 
-const monthFilter =
-    document.querySelector("#monthFilter");
-
 const descriptionInput =
     document.querySelector("#description");
 
@@ -70,57 +71,98 @@ const categoryInput =
 const dateInput =
     document.querySelector("#date");
 
-const quotesElement =
-    document.querySelector("#quotes");
+const donutChart =
+    document.querySelector("#donutChart");
+
+const donutValue =
+    document.querySelector("#donutValue");
+
+const expenseRatio =
+    document.querySelector("#expenseRatio");
+
+const legendIncome =
+    document.querySelector("#legendIncome");
+
+const legendExpense =
+    document.querySelector("#legendExpense");
+
+const financialScore =
+    document.querySelector("#financialScore");
+
+const healthScore =
+    document.querySelector("#healthScore");
+
+const healthStatus =
+    document.querySelector("#healthStatus");
+
+const healthDescription =
+    document.querySelector("#healthDescription");
+
+const healthSaving =
+    document.querySelector("#healthSaving");
+
+const healthExpenses =
+    document.querySelector("#healthExpenses");
+
+const healthBalance =
+    document.querySelector("#healthBalance");
+
+const budgetLimit =
+    document.querySelector("#budgetLimit");
+
+const budgetUsed =
+    document.querySelector("#budgetUsed");
+
+const budgetProgress =
+    document.querySelector("#budgetProgress");
+
+const budgetPercentage =
+    document.querySelector("#budgetPercentage");
 
 const marketStatus =
     document.querySelector("#marketStatus");
 
+const quotesElement =
+    document.querySelector("#quotes");
 
-/*
-========================================
-ÍCONES
-========================================
-*/
+const financialTipTitle =
+    document.querySelector("#financialTipTitle");
 
-const iconMap = {
+const financialTip =
+    document.querySelector("#financialTip");
 
-    "Alimentação":
-        "M6 3v8M3 3v5a3 3 0 0 0 3 3m0 0v10M15 3v18M15 3c4 0 6 2 6 5s-2 5-6 5",
-
-    "Transporte":
-        "M5 17h14l-1-8H6l-1 8Zm2-8 1-4h8l1 4M8 20h2M14 20h2M7 17v-2m10 2v-2",
-
-    "Moradia":
-        "M3 11.5 12 4l9 7.5M5 10v10h14V10M9 20v-5h6v5",
-
-    "Lazer":
-        "M7 7h10a4 4 0 0 1 4 4v3a3 3 0 0 1-5.2 2L14 14H10l-1.8 2A3 3 0 0 1 3 14v-3a4 4 0 0 1 4-4Zm1 3v3m-1.5-1.5h3",
-
-    "Saúde":
-        "M12 21s-8-4.7-8-11a4.5 4.5 0 0 1 8-2.7A4.5 4.5 0 0 1 20 10c0 6.3-8 11-8 11Z",
-
-    "Educação":
-        "M4 19V6a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2Zm0 0c0-1.1.9-2 2-2h13",
-
-    "Salário":
-        "M4 7h16v12H4zM8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M4 11h16M10 14h4",
-
-    "Outros":
-        "M4 7h16v13H4zM8 7V5h8v2M9 13h6"
-
-};
+const nextTip =
+    document.querySelector("#nextTip");
 
 
-/*
-========================================
-DADOS
-========================================
-*/
+/* =========================================================
+   CONFIGURAÇÕES
+========================================================= */
+
+const STORAGE_KEY =
+    "finance_transactions";
+
+const BUDGET_KEY =
+    "finance_budget";
+
+
+let budget =
+    Number(
+        localStorage.getItem(BUDGET_KEY)
+    ) || 3000;
+
+
+let activeTypeFilter =
+    "all";
+
+
+/* =========================================================
+   TRANSAÇÕES
+========================================================= */
 
 let transactions =
     JSON.parse(
-        localStorage.getItem("transactions")
+        localStorage.getItem(STORAGE_KEY)
     ) || [
 
         {
@@ -143,7 +185,7 @@ let transactions =
 
         {
             id: 3,
-            description: "Uber",
+            description: "Transporte",
             amount: 30,
             type: "expense",
             category: "Transporte",
@@ -153,40 +195,116 @@ let transactions =
     ];
 
 
-/*
-========================================
-FORMATAÇÃO
-========================================
-*/
+/* =========================================================
+   ÍCONES SVG
+========================================================= */
 
-function formatCurrency(
-    value,
-    compact = false
-) {
+const icons = {
 
-    if (
-        compact &&
-        Math.abs(value) >= 1000
-    ) {
+    "Alimentação":
+        "M6 3v8M3 3v5a3 3 0 0 0 3 3m0 0v10M15 3v18M15 3c4 0 6 2 6 5s-2 5-6 5",
 
-        return new Intl.NumberFormat(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL",
-                notation: "compact",
-                maximumFractionDigits: 1
-            }
-        ).format(value);
+    "Transporte":
+        "M5 17h14l-1-8H6l-1 8Zm2-8 2-4h6l2 4M8 20h2M14 20h2",
 
+    "Moradia":
+        "M3 11 12 4l9 7M5 10v10h14V10M9 20v-5h6v5",
+
+    "Lazer":
+        "M7 7h10a4 4 0 0 1 4 4v3a3 3 0 0 1-5 2l-2-2h-4l-2 2a3 3 0 0 1-5-2v-3a4 4 0 0 1 4-4",
+
+    "Saúde":
+        "M12 21s-8-4.7-8-11a4.5 4.5 0 0 1 8-2.7A4.5 4.5 0 0 1 20 10c0 6.3-8 11-8 11Z",
+
+    "Educação":
+        "M4 19V6a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2Zm0 0c0-1.1.9-2 2-2h13",
+
+    "Salário":
+        "M4 7h16v12H4zM8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M4 11h16",
+
+    "Investimentos":
+        "M4 19V5M4 19h16M7 15l4-4 3 2 5-7",
+
+    "Outros":
+        "M4 7h16v13H4zM8 7V5h8v2M9 13h6"
+
+};
+
+
+/* =========================================================
+   DICAS
+========================================================= */
+
+const tips = [
+
+    {
+        title: "Pague você primeiro.",
+        text:
+            "Assim que receber, separe uma parte da sua renda para seus objetivos antes de começar a gastar."
+    },
+
+    {
+        title: "Monte uma reserva.",
+        text:
+            "Uma reserva de emergência ajuda a lidar com imprevistos sem precisar recorrer a dívidas."
+    },
+
+    {
+        title: "Conheça seus gastos.",
+        text:
+            "Registrar suas despesas mostra para onde seu dinheiro realmente está indo."
+    },
+
+    {
+        title: "Cuidado com gastos recorrentes.",
+        text:
+            "Pequenas assinaturas mensais podem representar uma parcela significativa da sua renda ao longo do ano."
+    },
+
+    {
+        title: "Evite juros desnecessários.",
+        text:
+            "Sempre que possível, pague suas contas em dia e evite carregar dívidas de cartão de crédito."
+    },
+
+    {
+        title: "Defina objetivos claros.",
+        text:
+            "Uma meta financeira específica facilita decidir quanto guardar todos os meses."
     }
 
+];
+
+
+let currentTip = 0;
+
+
+/* =========================================================
+   FORMATAÇÃO
+========================================================= */
+
+function formatCurrency(value) {
 
     return new Intl.NumberFormat(
         "pt-BR",
         {
             style: "currency",
             currency: "BRL"
+        }
+    ).format(value);
+
+}
+
+
+function formatCompact(value) {
+
+    return new Intl.NumberFormat(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL",
+            notation: "compact",
+            maximumFractionDigits: 1
         }
     ).format(value);
 
@@ -206,217 +324,9 @@ function formatDate(date) {
 }
 
 
-/*
-========================================
-SALVAR
-========================================
-*/
-
-function saveTransactions() {
-
-    localStorage.setItem(
-        "transactions",
-        JSON.stringify(transactions)
-    );
-
-}
-
-
-/*
-========================================
-FILTRO
-========================================
-*/
-
-function getFilteredTransactions() {
-
-    const selectedMonth =
-        monthFilter.value;
-
-
-    if (
-        selectedMonth === "all"
-    ) {
-
-        return transactions;
-
-    }
-
-
-    return transactions.filter(
-        transaction =>
-            transaction.date.split("-")[1]
-            === selectedMonth
-    );
-
-}
-
-
-/*
-========================================
-RESUMO
-========================================
-*/
-
-function updateSummary() {
-
-    const filtered =
-        getFilteredTransactions();
-
-
-    const income =
-        filtered
-
-            .filter(
-                transaction =>
-                    transaction.type === "income"
-            )
-
-            .reduce(
-                (sum, transaction) =>
-                    sum + transaction.amount,
-                0
-            );
-
-
-    const expenses =
-        filtered
-
-            .filter(
-                transaction =>
-                    transaction.type === "expense"
-            )
-
-            .reduce(
-                (sum, transaction) =>
-                    sum + transaction.amount,
-                0
-            );
-
-
-    const balance =
-        income - expenses;
-
-
-    const total =
-        income + expenses;
-
-
-    const expensePercent =
-        total
-            ? Math.round(
-                (expenses / total) * 100
-            )
-            : 0;
-
-
-    balanceElement.textContent =
-        formatCurrency(balance);
-
-
-    incomeElement.textContent =
-        formatCurrency(income);
-
-
-    expensesElement.textContent =
-        formatCurrency(expenses);
-
-
-    legendIncome.textContent =
-        formatCurrency(
-            income,
-            true
-        );
-
-
-    legendExpense.textContent =
-        formatCurrency(
-            expenses,
-            true
-        );
-
-
-    donutValue.textContent =
-        formatCurrency(
-            expenses,
-            true
-        );
-
-
-    expenseRatio.textContent =
-        `${expensePercent}%`;
-
-
-    transactionCount.textContent =
-        `${filtered.length} ${
-            filtered.length === 1
-                ? "registro"
-                : "registros"
-        }`;
-
-
-    balanceStatus.textContent =
-        balance >= 0
-            ? "Resultado positivo no período"
-            : "Atenção ao resultado do período";
-
-
-    const max =
-        Math.max(
-            income,
-            expenses,
-            1
-        );
-
-
-    incomeBar.style.width =
-        `${(income / max) * 100}%`;
-
-
-    expenseBar.style.width =
-        `${(expenses / max) * 100}%`;
-
-
-    const angle =
-        expensePercent * 3.6;
-
-
-    donutChart.style.background =
-        `conic-gradient(
-            var(--red) 0deg ${angle}deg,
-            #242424 ${angle}deg 360deg
-        )`;
-
-}
-
-
-/*
-========================================
-ÍCONE
-========================================
-*/
-
-function categoryIcon(category) {
-
-    const path =
-        iconMap[category]
-        || iconMap.Outros;
-
-
-    return `
-        <svg viewBox="0 0 24 24">
-            <path d="${path}"/>
-        </svg>
-    `;
-
-}
-
-
-/*
-========================================
-SEGURANÇA
-========================================
-*/
+/* =========================================================
+   SEGURANÇA
+========================================================= */
 
 function escapeHtml(value) {
 
@@ -431,24 +341,485 @@ function escapeHtml(value) {
                 '"': "&quot;",
                 "'": "&#039;"
 
-            }[char])
+            })[char]
         );
 
 }
 
 
-/*
-========================================
-TRANSAÇÕES
-========================================
-*/
+/* =========================================================
+   SALVAR
+========================================================= */
+
+function saveTransactions() {
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(transactions)
+    );
+
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+function getFilteredTransactions() {
+
+    const month =
+        monthFilter.value;
+
+    const search =
+        searchTransaction.value
+            .trim()
+            .toLowerCase();
+
+
+    return transactions.filter(
+        transaction => {
+
+            const matchesMonth =
+                month === "all"
+                ||
+                transaction.date.split("-")[1]
+                === month;
+
+
+            const matchesType =
+                activeTypeFilter === "all"
+                ||
+                transaction.type
+                === activeTypeFilter;
+
+
+            const matchesSearch =
+                !search
+                ||
+                transaction.description
+                    .toLowerCase()
+                    .includes(search)
+                ||
+                transaction.category
+                    .toLowerCase()
+                    .includes(search);
+
+
+            return (
+                matchesMonth &&
+                matchesType &&
+                matchesSearch
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+function calculateSummary() {
+
+    const filtered =
+        getFilteredTransactions();
+
+
+    const income =
+        filtered
+            .filter(
+                item =>
+                    item.type === "income"
+            )
+            .reduce(
+                (total, item) =>
+                    total + item.amount,
+                0
+            );
+
+
+    const expenses =
+        filtered
+            .filter(
+                item =>
+                    item.type === "expense"
+            )
+            .reduce(
+                (total, item) =>
+                    total + item.amount,
+                0
+            );
+
+
+    const balance =
+        income - expenses;
+
+
+    const savingRate =
+        income > 0
+            ? Math.max(
+                0,
+                (balance / income) * 100
+            )
+            : 0;
+
+
+    return {
+        filtered,
+        income,
+        expenses,
+        balance,
+        savingRate
+    };
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function updateSummary() {
+
+    const {
+
+        filtered,
+        income,
+        expenses,
+        balance,
+        savingRate
+
+    } = calculateSummary();
+
+
+    balanceElement.textContent =
+        formatCurrency(balance);
+
+
+    incomeElement.textContent =
+        formatCurrency(income);
+
+
+    expensesElement.textContent =
+        formatCurrency(expenses);
+
+
+    savingRateElement.textContent =
+        `${Math.round(savingRate)}%`;
+
+
+    balanceStatus.textContent =
+        balance >= 0
+            ? "Resultado positivo no período"
+            : "Despesas acima das receitas";
+
+
+    const maximum =
+        Math.max(
+            income,
+            expenses,
+            1
+        );
+
+
+    incomeBar.style.width =
+        `${Math.min(
+            100,
+            (income / maximum) * 100
+        )}%`;
+
+
+    expenseBar.style.width =
+        `${Math.min(
+            100,
+            (expenses / maximum) * 100
+        )}%`;
+
+
+    updateChart(
+        income,
+        expenses
+    );
+
+
+    updateHealth(
+        income,
+        expenses,
+        balance,
+        savingRate
+    );
+
+
+    updateBudget(
+        expenses
+    );
+
+}
+
+
+/* =========================================================
+   GRÁFICO
+========================================================= */
+
+function updateChart(
+    income,
+    expenses
+) {
+
+    const total =
+        income + expenses;
+
+
+    const percentage =
+        total > 0
+            ? Math.round(
+                (expenses / total) * 100
+            )
+            : 0;
+
+
+    const angle =
+        percentage * 3.6;
+
+
+    donutChart.style.background =
+        `conic-gradient(
+            var(--red)
+            0deg ${angle}deg,
+            #242424
+            ${angle}deg 360deg
+        )`;
+
+
+    expenseRatio.textContent =
+        `${percentage}%`;
+
+
+    donutValue.textContent =
+        formatCompact(expenses);
+
+
+    legendIncome.textContent =
+        formatCompact(income);
+
+
+    legendExpense.textContent =
+        formatCompact(expenses);
+
+}
+
+
+/* =========================================================
+   SAÚDE FINANCEIRA
+========================================================= */
+
+function updateHealth(
+    income,
+    expenses,
+    balance,
+    savingRate
+) {
+
+    let score = 0;
+
+
+    if (income > 0) {
+
+        if (savingRate >= 20) {
+            score += 45;
+        } else {
+            score +=
+                Math.max(
+                    0,
+                    savingRate * 2
+                );
+        }
+
+    }
+
+
+    if (
+        income > 0 &&
+        expenses <= income * 0.7
+    ) {
+
+        score += 30;
+
+    } else if (
+        income > 0 &&
+        expenses <= income
+    ) {
+
+        score += 15;
+
+    }
+
+
+    if (balance > 0) {
+
+        score += 25;
+
+    }
+
+
+    score =
+        Math.round(
+            Math.min(
+                100,
+                score
+            )
+        );
+
+
+    financialScore.textContent =
+        score;
+
+
+    healthScore.textContent =
+        score;
+
+
+    healthSaving.textContent =
+        `${Math.round(savingRate)}%`;
+
+
+    const expenseRate =
+        income > 0
+            ? (expenses / income) * 100
+            : 0;
+
+
+    healthExpenses.textContent =
+        `${Math.round(
+            Math.min(
+                expenseRate,
+                100
+            )
+        )}%`;
+
+
+    healthBalance.textContent =
+        balance >= 0
+            ? "Positivo"
+            : "Negativo";
+
+
+    if (score >= 80) {
+
+        healthStatus.textContent =
+            "Excelente";
+
+        healthDescription.textContent =
+            "Você está mantendo bons hábitos financeiros.";
+
+    } else if (score >= 60) {
+
+        healthStatus.textContent =
+            "Saudável";
+
+        healthDescription.textContent =
+            "Sua organização financeira está no caminho certo.";
+
+    } else if (score >= 40) {
+
+        healthStatus.textContent =
+            "Atenção";
+
+        healthDescription.textContent =
+            "Existem pontos que podem ser melhorados.";
+
+    } else {
+
+        healthStatus.textContent =
+            "Precisa melhorar";
+
+        healthDescription.textContent =
+            "Comece controlando gastos e criando uma reserva.";
+
+    }
+
+}
+
+
+/* =========================================================
+   ORÇAMENTO
+========================================================= */
+
+function updateBudget(expenses) {
+
+    budgetLimit.textContent =
+        formatCurrency(budget);
+
+
+    budgetUsed.textContent =
+        formatCurrency(expenses);
+
+
+    const percentage =
+        budget > 0
+            ? (expenses / budget) * 100
+            : 0;
+
+
+    budgetProgress.style.width =
+        `${Math.min(
+            percentage,
+            100
+        )}%`;
+
+
+    budgetPercentage.textContent =
+        `${Math.round(
+            percentage
+        )}% utilizado`;
+
+
+    if (percentage > 100) {
+
+        budgetProgress.style.background =
+            "var(--red)";
+
+    } else {
+
+        budgetProgress.style.background =
+            "linear-gradient(90deg,var(--orange),var(--orange-light))";
+
+    }
+
+}
+
+
+/* =========================================================
+   ÍCONE DA CATEGORIA
+========================================================= */
+
+function categoryIcon(category) {
+
+    const path =
+        icons[category]
+        ||
+        icons["Outros"];
+
+
+    return `
+        <svg viewBox="0 0 24 24">
+            <path d="${path}"/>
+        </svg>
+    `;
+
+}
+
+
+/* =========================================================
+   RENDERIZAÇÃO
+========================================================= */
 
 function renderTransactions() {
 
     const filtered =
-        [
-            ...getFilteredTransactions()
-        ]
+        [...getFilteredTransactions()]
             .sort(
                 (a, b) =>
                     new Date(b.date)
@@ -457,11 +828,24 @@ function renderTransactions() {
             );
 
 
-    transactionList.innerHTML = "";
+    transactionList.innerHTML =
+        "";
 
 
     emptyMessage.hidden =
         filtered.length !== 0;
+
+
+    if (transactionCount) {
+
+        transactionCount.textContent =
+            `${filtered.length} ${
+                filtered.length === 1
+                    ? "registro"
+                    : "registros"
+            }`;
+
+    }
 
 
     filtered.forEach(
@@ -493,21 +877,18 @@ function renderTransactions() {
 
                     </div>
 
-
                     <div>
 
-                        <div
-                            class="transaction-description"
-                        >
+                        <div class="transaction-description">
+
                             ${escapeHtml(
                                 transaction.description
                             )}
+
                         </div>
 
+                        <div class="transaction-meta">
 
-                        <div
-                            class="transaction-meta"
-                        >
                             ${escapeHtml(
                                 transaction.category
                             )}
@@ -517,6 +898,7 @@ function renderTransactions() {
                             ${formatDate(
                                 transaction.date
                             )}
+
                         </div>
 
                     </div>
@@ -527,10 +909,7 @@ function renderTransactions() {
                 <div class="transaction-right">
 
                     <span
-                        class="
-                            transaction-amount
-                            ${transaction.type}
-                        "
+                        class="transaction-amount ${transaction.type}"
                     >
 
                         ${sign}
@@ -544,10 +923,19 @@ function renderTransactions() {
                     <button
                         class="delete-button"
                         data-id="${transaction.id}"
-                        title="Excluir transação"
                         aria-label="Excluir transação"
                     >
-                        ×
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path d="M4 7h16"/>
+                            <path d="M10 11v6"/>
+                            <path d="M14 11v6"/>
+                            <path d="M6 7l1 14h10l1-14"/>
+                            <path d="M9 7V4h6v3"/>
+
+                        </svg>
+
                     </button>
 
                 </div>
@@ -565,11 +953,9 @@ function renderTransactions() {
 }
 
 
-/*
-========================================
-ATUALIZAR
-========================================
-*/
+/* =========================================================
+   ATUALIZAÇÃO
+========================================================= */
 
 function updateDashboard() {
 
@@ -580,11 +966,9 @@ function updateDashboard() {
 }
 
 
-/*
-========================================
-MODAL
-========================================
-*/
+/* =========================================================
+   MODAL
+========================================================= */
 
 function openModal() {
 
@@ -617,38 +1001,32 @@ function closeModal() {
 
     transactionForm.reset();
 
-
-    document.querySelector(
-        'input[name="type"][value="expense"]'
-    ).checked = true;
-
-
     setTodayDate();
 
 }
 
 
-/*
-========================================
-DATA
-========================================
-*/
+/* =========================================================
+   DATA
+========================================================= */
 
 function setTodayDate() {
 
-    dateInput.value =
+    const today =
         new Date()
             .toISOString()
             .split("T")[0];
 
+
+    dateInput.value =
+        today;
+
 }
 
 
-/*
-========================================
-ADICIONAR
-========================================
-*/
+/* =========================================================
+   ADICIONAR TRANSAÇÃO
+========================================================= */
 
 transactionForm.addEventListener(
     "submit",
@@ -683,7 +1061,6 @@ transactionForm.addEventListener(
 
         if (
             !description ||
-            !amount ||
             amount <= 0 ||
             !category ||
             !date
@@ -725,11 +1102,9 @@ transactionForm.addEventListener(
 );
 
 
-/*
-========================================
-EXCLUIR
-========================================
-*/
+/* =========================================================
+   EXCLUIR
+========================================================= */
 
 transactionList.addEventListener(
     "click",
@@ -767,11 +1142,64 @@ transactionList.addEventListener(
 );
 
 
-/*
-========================================
-EVENTOS
-========================================
-*/
+/* =========================================================
+   FILTROS
+========================================================= */
+
+document
+    .querySelectorAll(".filter-chip")
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    document
+                        .querySelectorAll(
+                            ".filter-chip"
+                        )
+                        .forEach(
+                            item =>
+                                item.classList.remove(
+                                    "active"
+                                )
+                        );
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    activeTypeFilter =
+                        button.dataset.filter;
+
+
+                    updateDashboard();
+
+                }
+            );
+
+        }
+    );
+
+
+monthFilter.addEventListener(
+    "change",
+    updateDashboard
+);
+
+
+searchTransaction.addEventListener(
+    "input",
+    updateDashboard
+);
+
+
+/* =========================================================
+   MODAL EVENTOS
+========================================================= */
 
 addTransactionButton.addEventListener(
     "click",
@@ -807,12 +1235,6 @@ modal.addEventListener(
 );
 
 
-monthFilter.addEventListener(
-    "change",
-    updateDashboard
-);
-
-
 document.addEventListener(
     "keydown",
     event => {
@@ -832,19 +1254,156 @@ document.addEventListener(
 );
 
 
-/*
-========================================
-API DE COTAÇÕES
-========================================
+/* =========================================================
+   ORÇAMENTO
+========================================================= */
 
-AwesomeAPI:
-https://economia.awesomeapi.com.br
+document
+    .querySelector("#editBudget")
+    .addEventListener(
+        "click",
+        () => {
 
-Busca:
-USD/BRL
-EUR/BRL
-BTC/BRL
-*/
+            const value =
+                prompt(
+                    "Digite seu limite mensal de gastos:",
+                    budget
+                );
+
+
+            if (
+                value === null
+            ) {
+
+                return;
+
+            }
+
+
+            const newBudget =
+                Number(
+                    value.replace(
+                        ",",
+                        "."
+                    )
+                );
+
+
+            if (
+                !newBudget ||
+                newBudget <= 0
+            ) {
+
+                alert(
+                    "Digite um valor válido."
+                );
+
+                return;
+
+            }
+
+
+            budget =
+                newBudget;
+
+
+            localStorage.setItem(
+                BUDGET_KEY,
+                budget
+            );
+
+
+            updateDashboard();
+
+        }
+    );
+
+
+/* =========================================================
+   DICAS
+========================================================= */
+
+nextTip.addEventListener(
+    "click",
+    () => {
+
+        currentTip++;
+
+        if (
+            currentTip >= tips.length
+        ) {
+
+            currentTip = 0;
+
+        }
+
+
+        financialTipTitle.textContent =
+            tips[currentTip].title;
+
+
+        financialTip.textContent =
+            tips[currentTip].text;
+
+    }
+);
+
+
+/* =========================================================
+   NAVEGAÇÃO
+========================================================= */
+
+document
+    .querySelectorAll(".nav-item")
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    document
+                        .querySelectorAll(
+                            ".nav-item"
+                        )
+                        .forEach(
+                            item =>
+                                item.classList.remove(
+                                    "active"
+                                )
+                        );
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    const section =
+                        document.getElementById(
+                            button.dataset.section
+                        );
+
+
+                    if (section) {
+
+                        section.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   API DE MERCADO
+========================================================= */
 
 async function loadMarketQuotes() {
 
@@ -873,7 +1432,7 @@ async function loadMarketQuotes() {
             await response.json();
 
 
-        const items = [
+        const assets = [
 
             {
                 key: "USDBRL",
@@ -897,110 +1456,114 @@ async function loadMarketQuotes() {
 
 
         quotesElement.innerHTML =
-            items
-
-                .map(item => {
-
-                    const quote =
-                        data[item.key];
+            "";
 
 
-                    if (!quote) {
-                        return "";
-                    }
+        assets.forEach(
+            asset => {
+
+                const quote =
+                    data[asset.key];
 
 
-                    const change =
-                        Number(
-                            quote.pctChange || 0
+                if (!quote) {
+                    return;
+                }
+
+
+                const change =
+                    Number(
+                        quote.pctChange || 0
+                    );
+
+
+                const value =
+                    Number(
+                        quote.bid
+                    );
+
+
+                const formatted =
+                    asset.key === "BTCBRL"
+
+                        ? formatCompact(
+                            value
+                        )
+
+                        : formatCurrency(
+                            value
                         );
 
 
-                    const cls =
-                        change >= 0
-                            ? "positive"
-                            : "negative";
+                const item =
+                    document.createElement(
+                        "div"
+                    );
 
 
-                    const prefix =
-                        change > 0
-                            ? "+"
-                            : "";
+                item.className =
+                    "quote";
 
 
-                    const value =
-                        item.key === "BTCBRL"
+                item.innerHTML = `
 
-                            ? formatCurrency(
-                                Number(
-                                    quote.bid
-                                ),
-                                true
-                            )
+                    <div>
 
-                            : `R$ ${Number(
-                                quote.bid
-                            ).toLocaleString(
-                                "pt-BR",
-                                {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                }
-                            )}`;
-
-
-                    return `
-
-                        <div class="quote">
-
-                            <div>
-
-                                <div class="quote-name">
-                                    ${item.name}
-                                </div>
-
-                                <div class="quote-symbol">
-                                    ${item.symbol}
-                                </div>
-
-                            </div>
-
-
-                            <div class="quote-value">
-
-                                ${value}
-
-                                <span
-                                    class="
-                                        quote-change
-                                        ${cls}
-                                    "
-                                >
-
-                                    ${prefix}
-                                    ${change.toFixed(2)}%
-
-                                </span>
-
-                            </div>
-
+                        <div class="quote-name">
+                            ${asset.name}
                         </div>
 
-                    `;
+                        <div class="quote-symbol">
+                            ${asset.symbol}
+                        </div>
 
-                })
+                    </div>
 
-                .join("");
+
+                    <div class="quote-value">
+
+                        ${formatted}
+
+                        <span
+                            class="quote-change ${
+                                change >= 0
+                                    ? "positive"
+                                    : "negative"
+                            }"
+                        >
+
+                            ${
+                                change >= 0
+                                    ? "+"
+                                    : ""
+                            }
+
+                            ${change.toFixed(2)}%
+
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                quotesElement.appendChild(
+                    item
+                );
+
+            }
+        );
 
 
         marketStatus.innerHTML =
             "<span></span> AO VIVO";
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.error(
-            "Erro ao carregar cotações:",
+            "Erro nas cotações:",
             error
         );
 
@@ -1013,10 +1576,17 @@ async function loadMarketQuotes() {
 
             <div class="quote">
 
-                <span class="quote-symbol">
-                    Não foi possível carregar
-                    as cotações agora.
-                </span>
+                <div>
+
+                    <div class="quote-name">
+                        Mercado indisponível
+                    </div>
+
+                    <div class="quote-symbol">
+                        Tente novamente mais tarde.
+                    </div>
+
+                </div>
 
             </div>
 
@@ -1027,11 +1597,9 @@ async function loadMarketQuotes() {
 }
 
 
-/*
-========================================
-INICIALIZAÇÃO
-========================================
-*/
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
 
 setTodayDate();
 
@@ -1039,11 +1607,6 @@ updateDashboard();
 
 loadMarketQuotes();
 
-
-/*
-Atualiza as cotações
-a cada 5 minutos.
-*/
 
 setInterval(
     loadMarketQuotes,

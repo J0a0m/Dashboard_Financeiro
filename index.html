@@ -1,260 +1,1279 @@
-<!DOCTYPE html> <html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Financeiro</title>
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-<link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8">
 
-</head> <body>
-<header class="header">
-    <div>
-        <h1>Meu Financeiro</h1>
-        <p>Controle suas finanças de forma simples.</p>
-    </div>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <select id="monthFilter">
-        <option value="all">Todos os meses</option>
-        <option value="01">Janeiro</option>
-        <option value="02">Fevereiro</option>
-        <option value="03">Março</option>
-        <option value="04">Abril</option>
-        <option value="05">Maio</option>
-        <option value="06">Junho</option>
-        <option value="07">Julho</option>
-        <option value="08">Agosto</option>
-        <option value="09">Setembro</option>
-        <option value="10">Outubro</option>
-        <option value="11">Novembro</option>
-        <option value="12">Dezembro</option>
-    </select>
-</header>
+    <meta
+        name="description"
+        content="Finance — Dashboard inteligente para controle financeiro pessoal."
+    >
 
-<main>
+    <meta
+        name="theme-color"
+        content="#050505"
+    >
 
-    <section class="summary">
+    <title>Finance — Controle Financeiro</title>
 
-        <div class="card">
-            <div class="card-title">
-                <span>Saldo</span>
-                <span class="icon">💰</span>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <div class="ambient ambient-three"></div>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                F
             </div>
 
-            <strong id="balance">R$ 0,00</strong>
-        </div>
-
-        <div class="card">
-            <div class="card-title">
-                <span>Receitas</span>
-                <span class="icon">📈</span>
-            </div>
-
-            <strong id="income" class="income">
-                R$ 0,00
-            </strong>
-        </div>
-
-        <div class="card">
-            <div class="card-title">
-                <span>Despesas</span>
-                <span class="icon">📉</span>
-            </div>
-
-            <strong id="expenses" class="expense">
-                R$ 0,00
-            </strong>
-        </div>
-
-    </section>
-
-    <section class="transactions">
-
-        <div class="section-header">
             <div>
-                <h2>Transações</h2>
-                <p>Suas movimentações financeiras</p>
+                <strong>Finance</strong>
+                <span>Personal Finance</span>
             </div>
 
-            <button id="addTransaction">
-                + Adicionar
+        </div>
+
+
+        <nav class="navigation">
+
+            <p class="nav-label">
+                PRINCIPAL
+            </p>
+
+            <button
+                class="nav-item active"
+                data-section="dashboard"
+            >
+
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                </svg>
+
+                Dashboard
+
             </button>
-        </div>
 
-        <div id="transactionList" class="transaction-list">
-            <!-- As transações serão inseridas pelo JavaScript -->
-        </div>
 
-        <div id="emptyMessage" class="empty-message">
-            <span>💸</span>
-            <p>Nenhuma transação encontrada.</p>
-        </div>
+            <button
+                class="nav-item"
+                data-section="transactions-section"
+            >
 
-    </section>
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 5h16"/>
+                    <path d="M4 12h16"/>
+                    <path d="M4 19h16"/>
+                    <circle cx="8" cy="5" r="1"/>
+                    <circle cx="8" cy="12" r="1"/>
+                    <circle cx="8" cy="19" r="1"/>
+                </svg>
 
-</main>
+                Transações
 
-<!-- Modal -->
-
-<div id="modal" class="modal">
-
-    <div class="modal-content">
-
-        <div class="modal-header">
-            <div>
-                <h2>Nova transação</h2>
-                <p>Adicione uma movimentação financeira.</p>
-            </div>
-
-            <button id="closeModal" class="close-button">
-                &times;
             </button>
-        </div>
 
-        <form id="transactionForm">
 
-            <div class="form-group">
-                <label for="description">
-                    Descrição
-                </label>
+            <button
+                class="nav-item"
+                data-section="budget-section"
+            >
 
-                <input
-                    type="text"
-                    id="description"
-                    placeholder="Ex: Supermercado"
-                    required
-                >
-            </div>
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 5h16v14H4z"/>
+                    <path d="M8 9h8"/>
+                    <path d="M8 13h5"/>
+                    <path d="M8 17h3"/>
+                </svg>
 
-            <div class="form-group">
-                <label for="amount">
-                    Valor
-                </label>
+                Orçamento
 
-                <input
-                    type="number"
-                    id="amount"
-                    placeholder="0,00"
-                    min="0.01"
-                    step="0.01"
-                    required
-                >
-            </div>
+            </button>
 
-            <div class="form-group">
-                <label>
-                    Tipo
-                </label>
 
-                <div class="type-options">
+            <button
+                class="nav-item"
+                data-section="goals-section"
+            >
 
-                    <label class="type-option">
-                        <input
-                            type="radio"
-                            name="type"
-                            value="expense"
-                            checked
-                        >
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 3v18"/>
+                    <path d="M7 7h8a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h8"/>
+                </svg>
 
-                        <span>Despesa</span>
-                    </label>
+                Metas
 
-                    <label class="type-option">
-                        <input
-                            type="radio"
-                            name="type"
-                            value="income"
-                        >
+            </button>
 
-                        <span>Receita</span>
-                    </label>
+
+            <p class="nav-label">
+                ANÁLISE
+            </p>
+
+
+            <button
+                class="nav-item"
+                data-section="analysis-section"
+            >
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 19V5"/>
+                    <path d="M4 19h16"/>
+                    <path d="m7 15 4-4 3 2 5-7"/>
+                </svg>
+
+                Análises
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-section="market-section"
+            >
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 6h18"/>
+                    <path d="M5 6v12"/>
+                    <path d="M19 6v12"/>
+                    <path d="M8 10h8"/>
+                    <path d="M8 14h5"/>
+                </svg>
+
+                Mercado
+
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="financial-tip-mini">
+
+                <span class="tip-line"></span>
+
+                <div>
+
+                    <strong>
+                        Regra 50/30/20
+                    </strong>
+
+                    <p>
+                        Necessidades, desejos e investimentos.
+                    </p>
 
                 </div>
+
             </div>
 
-            <div class="form-group">
+        </div>
 
-                <label for="category">
-                    Categoria
-                </label>
+    </aside>
 
-                <select id="category" required>
 
-                    <option value="">
-                        Selecione uma categoria
+    <!-- CONTEÚDO -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+
+                <span class="page-label">
+                    VISÃO GERAL
+                </span>
+
+                <h1>
+                    Dashboard financeiro
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <div class="connection">
+
+                    <span></span>
+
+                    Dados locais
+
+                </div>
+
+
+                <select id="monthFilter">
+
+                    <option value="all">
+                        Todos os meses
                     </option>
 
-                    <option value="Alimentação">
-                        🍔 Alimentação
-                    </option>
-
-                    <option value="Transporte">
-                        🚗 Transporte
-                    </option>
-
-                    <option value="Moradia">
-                        🏠 Moradia
-                    </option>
-
-                    <option value="Lazer">
-                        🎮 Lazer
-                    </option>
-
-                    <option value="Saúde">
-                        🏥 Saúde
-                    </option>
-
-                    <option value="Educação">
-                        📚 Educação
-                    </option>
-
-                    <option value="Salário">
-                        💼 Salário
-                    </option>
-
-                    <option value="Outros">
-                        📦 Outros
-                    </option>
+                    <option value="01">Janeiro</option>
+                    <option value="02">Fevereiro</option>
+                    <option value="03">Março</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Maio</option>
+                    <option value="06">Junho</option>
+                    <option value="07">Julho</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
 
                 </select>
 
-            </div>
-
-            <div class="form-group">
-
-                <label for="date">
-                    Data
-                </label>
-
-                <input
-                    type="date"
-                    id="date"
-                    required
-                >
-
-            </div>
-
-            <div class="form-actions">
 
                 <button
+                    id="addTransaction"
+                    class="neon-button"
+                >
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 5v14"/>
+                        <path d="M5 12h14"/>
+                    </svg>
+
+                    Nova transação
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div>
+
+                <span class="hero-kicker">
+                    CONTROLE INTELIGENTE
+                </span>
+
+                <h2>
+                    Seu dinheiro.
+                    <span>Suas decisões.</span>
+                </h2>
+
+                <p>
+                    Tenha uma visão clara das suas finanças,
+                    acompanhe seus objetivos e tome decisões
+                    melhores todos os meses.
+                </p>
+
+            </div>
+
+
+            <div class="hero-score">
+
+                <span>
+                    SAÚDE FINANCEIRA
+                </span>
+
+                <strong id="financialScore">
+                    0
+                </strong>
+
+                <small>
+                    / 100
+                </small>
+
+            </div>
+
+        </section>
+
+
+        <!-- CARDS PRINCIPAIS -->
+
+        <section class="summary-grid">
+
+
+            <article class="metric-card main-balance">
+
+                <div class="metric-header">
+
+                    <div>
+
+                        <span>
+                            SALDO ATUAL
+                        </span>
+
+                        <small>
+                            Receitas - despesas
+                        </small>
+
+                    </div>
+
+                    <div class="metric-icon orange">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 7h16"/>
+                            <path d="M5 7V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2"/>
+                            <path d="M5 7v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7"/>
+                            <path d="M15 13h4"/>
+                        </svg>
+
+                    </div>
+
+                </div>
+
+                <strong id="balance">
+                    R$ 0,00
+                </strong>
+
+                <div class="metric-footer">
+
+                    <span id="balanceStatus">
+                        Sem movimentações
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-header">
+
+                    <div>
+
+                        <span>
+                            RECEITAS
+                        </span>
+
+                        <small>
+                            Entradas no período
+                        </small>
+
+                    </div>
+
+                    <div class="metric-icon green">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 19V5"/>
+                            <path d="m6 11 6-6 6 6"/>
+                        </svg>
+
+                    </div>
+
+                </div>
+
+                <strong
+                    id="income"
+                    class="green-text"
+                >
+                    R$ 0,00
+                </strong>
+
+                <div class="progress">
+                    <span id="incomeBar"></span>
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-header">
+
+                    <div>
+
+                        <span>
+                            DESPESAS
+                        </span>
+
+                        <small>
+                            Saídas no período
+                        </small>
+
+                    </div>
+
+                    <div class="metric-icon red">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 5v14"/>
+                            <path d="m6 13 6 6 6-6"/>
+                        </svg>
+
+                    </div>
+
+                </div>
+
+                <strong
+                    id="expenses"
+                    class="red-text"
+                >
+                    R$ 0,00
+                </strong>
+
+                <div class="progress">
+                    <span id="expenseBar"></span>
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-header">
+
+                    <div>
+
+                        <span>
+                            TAXA DE POUPANÇA
+                        </span>
+
+                        <small>
+                            Quanto você consegue guardar
+                        </small>
+
+                    </div>
+
+                    <div class="metric-icon purple">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3v18"/>
+                            <path d="M7 7h8a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h8"/>
+                        </svg>
+
+                    </div>
+
+                </div>
+
+                <strong id="savingRate">
+                    0%
+                </strong>
+
+                <div class="metric-footer">
+
+                    <span>
+                        Meta recomendada: 20%
+                    </span>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- CONTEÚDO -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- TRANSAÇÕES -->
+
+            <section
+                id="transactions-section"
+                class="panel transactions-panel"
+            >
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            MOVIMENTAÇÕES
+                        </span>
+
+                        <h3>
+                            Transações recentes
+                        </h3>
+
+                    </div>
+
+
+                    <div class="transaction-tools">
+
+                        <div class="search-box">
+
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="7"/>
+                                <path d="m16 16 5 5"/>
+                            </svg>
+
+                            <input
+                                type="text"
+                                id="searchTransaction"
+                                placeholder="Pesquisar"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="transaction-filters">
+
+                    <button
+                        class="filter-chip active"
+                        data-filter="all"
+                    >
+                        Todas
+                    </button>
+
+                    <button
+                        class="filter-chip"
+                        data-filter="income"
+                    >
+                        Receitas
+                    </button>
+
+                    <button
+                        class="filter-chip"
+                        data-filter="expense"
+                    >
+                        Despesas
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="transactionList"
+                    class="transaction-list"
+                ></div>
+
+
+                <div
+                    id="emptyMessage"
+                    class="empty-state"
+                    hidden
+                >
+
+                    <div class="empty-icon">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 7h16v13H4z"/>
+                            <path d="M8 7V5h8v2"/>
+                            <path d="M8 12h8"/>
+                        </svg>
+
+                    </div>
+
+                    <strong>
+                        Nenhuma transação encontrada
+                    </strong>
+
+                    <p>
+                        Adicione uma movimentação para começar.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ANÁLISE -->
+
+            <section
+                id="analysis-section"
+                class="panel analysis-panel"
+            >
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            ANÁLISE
+                        </span>
+
+                        <h3>
+                            Distribuição
+                        </h3>
+
+                    </div>
+
+                    <span
+                        id="expenseRatio"
+                        class="small-badge"
+                    >
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="donut-container">
+
+                    <div
+                        id="donutChart"
+                        class="donut"
+                    >
+
+                        <div class="donut-center">
+
+                            <strong id="donutValue">
+                                R$ 0
+                            </strong>
+
+                            <span>
+                                despesas
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="legend">
+
+                    <div>
+
+                        <span class="legend-color income-color"></span>
+
+                        <span>
+                            Receitas
+                        </span>
+
+                        <strong id="legendIncome">
+                            R$ 0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="legend-color expense-color"></span>
+
+                        <span>
+                            Despesas
+                        </span>
+
+                        <strong id="legendExpense">
+                            R$ 0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ORÇAMENTO -->
+
+            <section
+                id="budget-section"
+                class="panel budget-panel"
+            >
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            PLANEJAMENTO
+                        </span>
+
+                        <h3>
+                            Orçamento mensal
+                        </h3>
+
+                    </div>
+
+                    <button
+                        id="editBudget"
+                        class="ghost-button"
+                    >
+                        Ajustar
+                    </button>
+
+                </div>
+
+
+                <div class="budget-total">
+
+                    <div>
+
+                        <span>
+                            Limite mensal
+                        </span>
+
+                        <strong id="budgetLimit">
+                            R$ 3.000,00
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Utilizado
+                        </span>
+
+                        <strong id="budgetUsed">
+                            R$ 0,00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="budget-progress">
+
+                    <span id="budgetProgress"></span>
+
+                </div>
+
+
+                <div class="budget-footer">
+
+                    <span id="budgetPercentage">
+                        0% utilizado
+                    </span>
+
+                    <span>
+                        Meta de gastos
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- METAS -->
+
+            <section
+                id="goals-section"
+                class="panel goals-panel"
+            >
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            OBJETIVOS
+                        </span>
+
+                        <h3>
+                            Metas financeiras
+                        </h3>
+
+                    </div>
+
+                    <button
+                        id="addGoal"
+                        class="ghost-button"
+                    >
+                        Nova meta
+                    </button>
+
+                </div>
+
+
+                <div id="goalsList">
+
+                    <div class="goal">
+
+                        <div class="goal-top">
+
+                            <div>
+
+                                <strong>
+                                    Reserva de emergência
+                                </strong>
+
+                                <span>
+                                    R$ 6.000 de R$ 10.000
+                                </span>
+
+                            </div>
+
+                            <strong>
+                                60%
+                            </strong>
+
+                        </div>
+
+                        <div class="goal-progress">
+                            <span style="width:60%"></span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="goal">
+
+                        <div class="goal-top">
+
+                            <div>
+
+                                <strong>
+                                    Investimentos
+                                </strong>
+
+                                <span>
+                                    R$ 2.500 de R$ 5.000
+                                </span>
+
+                            </div>
+
+                            <strong>
+                                50%
+                            </strong>
+
+                        </div>
+
+                        <div class="goal-progress">
+                            <span style="width:50%"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- SAÚDE FINANCEIRA -->
+
+            <section class="panel health-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            INDICADORES
+                        </span>
+
+                        <h3>
+                            Saúde financeira
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="health-score">
+
+                    <div class="score-ring">
+
+                        <strong id="healthScore">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <strong id="healthStatus">
+                            Sem dados
+                        </strong>
+
+                        <p id="healthDescription">
+                            Adicione suas movimentações
+                            para calcular seu índice.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="health-items">
+
+                    <div>
+
+                        <span>
+                            Taxa de poupança
+                        </span>
+
+                        <strong id="healthSaving">
+                            0%
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Controle de gastos
+                        </span>
+
+                        <strong id="healthExpenses">
+                            0%
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Saldo
+                        </span>
+
+                        <strong id="healthBalance">
+                            Estável
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- DICA -->
+
+            <section class="panel tip-panel">
+
+                <div class="tip-decoration"></div>
+
+                <span class="section-label">
+                    EDUCAÇÃO FINANCEIRA
+                </span>
+
+                <h3 id="financialTipTitle">
+                    Pague você primeiro.
+                </h3>
+
+                <p id="financialTip">
+                    Assim que receber, separe uma parte
+                    da sua renda para seus objetivos antes
+                    de começar a gastar.
+                </p>
+
+                <button
+                    id="nextTip"
+                    class="neon-outline"
+                >
+                    Próxima dica
+                </button>
+
+            </section>
+
+
+            <!-- MERCADO -->
+
+            <section
+                id="market-section"
+                class="panel market-panel"
+            >
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            MERCADO
+                        </span>
+
+                        <h3>
+                            Cotações
+                        </h3>
+
+                    </div>
+
+                    <span
+                        id="marketStatus"
+                        class="live-status"
+                    >
+                        <span></span>
+                        AO VIVO
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="quotes"
+                    class="quotes"
+                >
+
+                    <div class="quote-loading"></div>
+                    <div class="quote-loading"></div>
+                    <div class="quote-loading"></div>
+
+                </div>
+
+                <small class="api-source">
+                    Dados atualizados automaticamente.
+                </small>
+
+            </section>
+
+        </div>
+
+
+        <footer class="footer">
+
+            <span>
+                Finance Dashboard
+            </span>
+
+            <span>
+                Controle • Planejamento • Evolução
+            </span>
+
+        </footer>
+
+    </main>
+
+
+    <!-- MODAL TRANSAÇÃO -->
+
+    <div
+        id="modal"
+        class="modal"
+        aria-hidden="true"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="section-label">
+                        NOVA MOVIMENTAÇÃO
+                    </span>
+
+                    <h2>
+                        Adicionar transação
+                    </h2>
+
+                    <p>
+                        Registre uma entrada ou saída.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="closeModal"
+                    class="modal-close"
                     type="button"
-                    id="cancelButton"
-                    class="cancel-button"
                 >
-                    Cancelar
-                </button>
 
-                <button
-                    type="submit"
-                    class="save-button"
-                >
-                    Adicionar transação
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 6l12 12"/>
+                        <path d="M18 6 6 18"/>
+                    </svg>
+
                 </button>
 
             </div>
 
-        </form>
+
+            <form id="transactionForm">
+
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Descrição
+                    </label>
+
+                    <input
+                        type="text"
+                        id="description"
+                        placeholder="Ex.: Supermercado"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="amount">
+                            Valor
+                        </label>
+
+                        <input
+                            type="number"
+                            id="amount"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="0,00"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="date">
+                            Data
+                        </label>
+
+                        <input
+                            type="date"
+                            id="date"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Tipo
+                    </label>
+
+                    <div class="type-options">
+
+                        <label class="type-option expense-option">
+
+                            <input
+                                type="radio"
+                                name="type"
+                                value="expense"
+                                checked
+                            >
+
+                            Despesa
+
+                        </label>
+
+
+                        <label class="type-option income-option">
+
+                            <input
+                                type="radio"
+                                name="type"
+                                value="income"
+                            >
+
+                            Receita
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Categoria
+                    </label>
+
+                    <select id="category" required>
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option value="Alimentação">
+                            Alimentação
+                        </option>
+
+                        <option value="Transporte">
+                            Transporte
+                        </option>
+
+                        <option value="Moradia">
+                            Moradia
+                        </option>
+
+                        <option value="Lazer">
+                            Lazer
+                        </option>
+
+                        <option value="Saúde">
+                            Saúde
+                        </option>
+
+                        <option value="Educação">
+                            Educação
+                        </option>
+
+                        <option value="Salário">
+                            Salário
+                        </option>
+
+                        <option value="Investimentos">
+                            Investimentos
+                        </option>
+
+                        <option value="Outros">
+                            Outros
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        id="cancelButton"
+                        class="cancel-button"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        Salvar transação
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 
-</div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
-</body> </html>
+</body>
+
+</html>
