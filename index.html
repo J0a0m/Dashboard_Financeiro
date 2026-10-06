@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meu Financeiro</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Meu Financeiro</h1>
+
+        <select id="monthFilter">
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+        </select>
+    </header>
+
+    <main>
+
+        <section class="summary">
+
+            <div class="card">
+                <span>Saldo</span>
+                <strong id="balance">R$ 0,00</strong>
+            </div>
+
+            <div class="card">
+                <span>Receitas</span>
+                <strong id="income">R$ 0,00</strong>
+            </div>
+
+            <div class="card">
+                <span>Despesas</span>
+                <strong id="expenses">R$ 0,00</strong>
+            </div>
+
+        </section>
+
+        <section class="transactions">
+
+            <div class="section-header">
+                <h2>Transações</h2>
+
+                <button id="addTransaction">
+                    + Adicionar
+                </button>
+            </div>
+
+            <div id="transactionList">
+                <!-- Transações serão adicionadas pelo JavaScript -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
